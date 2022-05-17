@@ -9,18 +9,34 @@
 
   <div class="controls">
     <label for="spacing">Spacing:</label>
-    <input id="spacing" type="range" name="spacing" min="10" max="200" value="10" data-sizing="px">
+    <input id="spacing" type="range" name="spacing" min="10" max="200" value="20" data-sizing="px">
 
     <label for="blur">Blur:</label>
-    <input id="blur" type="range" name="blur" min="0" max="25" value="10" data-sizing="px">
+    <input id="blur" type="range" name="blur" min="0" max="25" value="0" data-sizing="px">
 
     <label for="base">Base Color</label>
-    <input id="base" type="color" name="base" value="#ffc600">
+    <input id="base" type="color" name="base" value="#bcf0ac">
   </div>
 
   <img src="https://source.unsplash.com/7bwQXzbF6KE/800x500">
 
   <style>
+
+    :root {
+      --base: #bcf0ac;
+      --spacing: 20px;
+      --blur: 0px;
+    }
+
+    img {
+      padding: var(--spacing);
+      background: var(--base);
+      filter: blur(var(--blur));
+    }
+
+    .hl {
+      color: var(--base);
+    }
 
     /*
       misc styles, nothing to do with CSS variables
@@ -45,6 +61,22 @@
   </style>
 
   <script>
+    // select the elements that will be changed 
+    const inputs = document.querySelectorAll('.controls input');
+
+    // function to handle the input changes
+    function handleUpdate() {
+      // this.dataset grabs the data- attributes and put them in an object
+      const suffix = this.dataset.sizing || '';
+      // select the root of the document and set a property, this.name "name attribute in HTML", set to the value + the suffix variable
+      document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+    }
+
+    // Loop over the inputs and handels the change on the input calling the handleUpdate function
+    inputs.forEach(input => input.addEventListener('change', handleUpdate));
+    // Listen for dragging of the slider and update a change
+    inputs.forEach(input => input.addEventListener('mousemove', handleUpdate));
+
   </script>
 
 </body>
